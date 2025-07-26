@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>App Bolsos Barbie 💖</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5/dist/full.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* Defino colores Barbie custom para usar en clases */
+        :root {
+            --barbiePink: #ff2d55;
+            --barbiePinkLight: #ff6f91;
+            --barbiePinkLighter: #ff9bbd;
+            --barbiePinkDark: #b2224b;
+        }
+    </style>
+</head>
+
+<body class="bg-pink-50 p-6 font-sans">
+
+    <h1 class="text-4xl font-extrabold text-[var(--barbiePink)] text-center mb-6 select-none">📦 Buscar Bolsos</h1>
+
+    <div class="max-w-xl mx-auto bg-white rounded-lg shadow-lg p-6">
+
+        <!-- Barra de búsqueda -->
+        <input type="text" id="searchInput" placeholder="🔍 Busca marca o referencia..."
+            class="input w-full mb-6 bg-white border-2 border-[var(--barbiePinkLight)] rounded-full px-4 py-3 text-[var(--barbiePinkDark)] placeholder-[var(--barbiePinkLighter)] focus:outline-none focus:border-[var(--barbiePink)] focus:ring-2 focus:ring-[var(--barbiePinkLight)] transition-all duration-300" />
+
+        <!-- Botones de marcas -->
+        <div id="marcasContainer" class="flex flex-wrap justify-center gap-3 mb-6">
+            <!-- Botones con estilo Barbie desde JS -->
+        </div>
+
+        <!-- Referencias desplegadas -->
+        <div id="referenciasContainer"
+            class="max-h-96 overflow-auto rounded border border-[var(--barbiePink)] p-4 bg-pink-100 text-[var(--barbiePinkDark)]">
+            <p class="text-center italic text-[var(--barbiePinkLighter)]">Selecciona una marca o busca algo en la barra
+            </p>
+        </div>
+
+        <!-- Botón para abrir modal -->
+        <div class="my-6 text-center">
+            <button id="btnAbrirModal"
+                class="btn bg-[var(--barbiePink)] border-2 border-[var(--barbiePink)] rounded-full px-4 py-3 hover:bg-[var(--barbiePinkDark)] hover:border-[var(--barbiePinkDark)] text-white shadow-lg">
+                Agregar bolso
+            </button>
+        </div>
+         <div class="my-6 text-center">
+            <button id="btnAbrirModalEditar"
+                class="btn bg-[var(--barbiePink)] border-2 border-[var(--barbiePink)] rounded-full px-4 py-3 hover:bg-[var(--barbiePinkDark)] hover:border-[var(--barbiePinkDark)] text-white shadow-lg">
+                Editar Precios
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modalAgregar" class="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center hidden">
+        <div class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full ring-4 ring-[var(--barbiePink)]">
+            <h2 class="text-2xl font-bold mb-4 text-[var(--barbiePink)]">Agregar bolso</h2>
+            <select id="inputMarca"
+                class="select select-bordered w-full mb-6 bg-white border-2 border-[var(--barbiePinkLight)] rounded-full px-4 py-3 text-[var(--barbiePinkDark)] focus:outline-none focus:border-[var(--barbiePink)] focus:ring-[var(--barbiePink)]">
+                <option value="">Selecciona una marca</option>
+                <option value="Tronks">Tronks</option>
+                <option value="Gema">Gema</option>
+                <option value="Motta">Motta</option>
+                <option value="Extreme">Extreme</option>
+                <option value="Reno">Reno</option>
+                <option value="Najos">Najos</option>
+                <option value="Beks">Beks</option>
+                <option value="Yal">Yal</option>
+                <option value="Jhofro">Jhofro</option>
+                <option value="RDA">RDA</option>
+                <option value="Importada">Importada</option>
+            </select>
+
+
+            <input type="text" id="inputReferencia" placeholder="Referencia"
+                class="input w-full mb-6 bg-white border-2 border-[var(--barbiePinkLight)] rounded-full px-4 py-3 text-[var(--barbiePinkDark)] placeholder-[var(--barbiePinkLighter)] focus:outline-none focus:border-[var(--barbiePink)] focus:ring-2 focus:ring-[var(--barbiePinkLight)] transition-all duration-300" />
+            <input type="number" id="inputPrecio" placeholder="Precio"
+                class="input w-full mb-6 bg-white border-2 border-[var(--barbiePinkLight)] rounded-full px-4 py-3 text-[var(--barbiePinkDark)] placeholder-[var(--barbiePinkLighter)] focus:outline-none focus:border-[var(--barbiePink)] focus:ring-2 focus:ring-[var(--barbiePinkLight)] transition-all duration-300" />
+            <div class="flex justify-end gap-3 mt-4">
+                <button id="btnCerrarModal"
+                    class="btn btn-outline border-[var(--barbiePink)] text-[var(--barbiePink)] border-2 rounded-full px-4 py-3hover:bg-[var(--barbiePink)]">Cancelar</button>
+                <button id="btnGuardarBolso"
+                    class="btn bg-[var(--barbiePink)] border-2 border-[var(--barbiePink)] rounded-full px-4 py-3 hover:border-[var(--barbiePinkDark)] text-white shadow-lg">Guardar</button>
+            </div>
+        </div>
+    </div>
+  <!-- Modal de edición de precios -->
+<dialog id="modalEditar" class="rounded-xl p-6 shadow-lg w-80 bg-pink-100 backdrop:bg-black/50">
+  <h2 class="text-xl font-bold mb-4 text-center text-[var(--barbiePink)]">✏️ Editar bolso</h2>
+
+  <label class="block mb-2 text-sm text-[var(--barbiePinkDark)]">Marca</label>
+  <select id="marcaEditar" class="select select-bordered w-full mb-6 bg-white border-2 border-[var(--barbiePinkLight)] rounded-full px-4 py-3 text-[var(--barbiePinkDark)] focus:outline-none focus:border-[var(--barbiePink)] focus:ring-[var(--barbiePink)]">
+    <option value="">Selecciona una marca</option>
+  </select>
+
+  <label class="block mb-2 text-sm text-[var(--barbiePinkDark)]">Referencia</label>
+  <select id="referenciaEditar" class="select select-bordered w-full mb-6 bg-white border-2 border-[var(--barbiePinkLight)] rounded-full px-4 py-3 text-[var(--barbiePinkDark)] focus:outline-none focus:border-[var(--barbiePink)] focus:ring-[var(--barbiePink)]>
+    <option value="">Selecciona una referencia</option>
+  </select>
+
+  <label class="block mb-2 text-sm text-[var(--barbiePinkDark)]">Nuevo precio</label>
+  <input type="number" id="precioEditar" placeholder="Nuevo Precio" class="input w-full mb-6 bg-white border-2 border-[var(--barbiePinkLight)] rounded-full px-4 py-3 text-[var(--barbiePinkDark)] placeholder-[var(--barbiePinkLighter)] focus:outline-none focus:border-[var(--barbiePink)] focus:ring-2 focus:ring-[var(--barbiePinkLight)] transition-all duration-300" />
+
+  <div class="flex justify-end gap-2">
+    <button onclick="document.getElementById('modalEditar').close()" class="btn btn-outline border-[var(--barbiePink)] text-[var(--barbiePink)] border-2 rounded-full px-4 py-3hover:bg-[var(--barbiePink)]">Cancelar</button>
+    <button id="guardarCambioBtn" class="btn bg-[var(--barbiePink)] border-2 border-[var(--barbiePink)] rounded-full px-4 py-3 hover:border-[var(--barbiePinkDark)] text-white shadow-lg"">Guardar cambios</button>
+  </div>
+</dialog>
+
+
+
+    <!-- Aquí iría tu app.js o el script para el Firebase y lógica -->
+    <script type="module" src="app.js"></script>
+</body>
+
+</html>
